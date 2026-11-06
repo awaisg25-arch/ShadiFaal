@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول اعداد قمری و ستارہ کیلکولیٹر</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Urdu & Arabic Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Amiri', 'Noto Nastaliq Urdu', 'Segoe UI', Tahoma, sans-serif;
+            background: radial-gradient(circle at top, #0f172a 0%, #1e1b4b 50%, #090d16 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+        }
+        .nastaliq {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+            line-height: 2.2;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.78);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+        }
+        .gold-text {
+            background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .input-active {
+            border-color: #fbbf24 !important;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25) !important;
+        }
+        .key-btn {
+            transition: all 0.12s ease;
+            user-select: none;
+        }
+        .key-btn:active {
+            transform: scale(0.92);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="p-3 sm:p-6 md:p-8">
+
+    <!-- Top Header Banner -->
+    <div class="max-w-5xl mx-auto">
+        <header class="text-center mb-6 sm:mb-8 glass-card rounded-2xl p-5 sm:p-7 shadow-2xl border-t-4 border-amber-400 relative overflow-hidden">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="inline-flex items-center justify-center gap-2 px-4 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-300 text-sm mb-3">
+                <i class="fa-solid fa-moon"></i>
+                <span>علم الاعداد و نجوم کا مستند آن لائن سافٹ ویئر</span>
+                <i class="fa-solid fa-star text-xs"></i>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-bold gold-text nastaliq py-1">
+                جدول اعداد قمری و ستارہ کیلکولیٹر
+            </h1>
+            <p class="text-slate-300 text-base sm:text-lg mt-2 max-w-2xl mx-auto">
+                صرف نام اور والدہ کا نام لکھیں — اعداد، برج، ستارہ اور دو ستاروں کی آپس میں دوستی یا دشمنی کا مکمل حساب خودکار طریقے سے نکالیں۔
+            </p>
+
+            <!-- Quick Action Bar: Online Hosting Guide & Reference Tables -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mt-5">
+                <button onclick="fillSampleData()" class="px-4 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-sm sm:text-base flex items-center gap-2 transition">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>مثال (ڈیمو) چیک کریں</span>
+                </button>
+                <button onclick="toggleModal('tablesModal')" class="px-4 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-400/40 text-indigo-200 text-sm sm:text-base flex items-center gap-2 transition">
+                    <i class="fa-solid fa-table"></i>
+                    <span>اصلی جدول اور چارٹ دیکھیں</span>
+                </button>
+                <button onclick="toggleModal('onlineGuideModal')" class="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-sm sm:text-base flex items-center gap-2 transition">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>اسے مستقل آن لائن ویب سائٹ کیسے بنائیں؟</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mode Selector Tabs -->
+        <div class="flex justify-center mb-6">
+            <div class="glass-card p-1.5 rounded-2xl inline-flex gap-2">
+                <button id="tabCouple" onclick="setMode('couple')" class="px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 gold-gradient text-slate-950 shadow-lg">
+                    <i class="fa-solid fa-people-arrows"></i>
+                    <span>لڑکا اور لڑکی کا موازنہ (دوستی/دشمنی)</span>
+                </button>
+                <button id="tabSingle" onclick="setMode('single')" class="px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/60">
+                    <i class="fa-solid fa-user"></i>
+                    <span>صرف ایک فرد کا ستارہ معلوم کریں</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Input Cards Grid -->
+        <div id="inputGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+            
+            <!-- Boy / First Person Card -->
+            <div class="glass-card rounded-2xl p-5 sm:p-6 border-t-4 border-sky-400 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                    <h2 id="person1Title" class="text-xl sm:text-2xl font-bold text-sky-300 flex items-center gap-2">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span>لڑکے کی تفصیلات</span>
+                    </h2>
+                    <span class="text-xs bg-sky-500/20 text-sky-300 px-2.5 py-1 rounded-full border border-sky-500/30">لازمی</span>
+                </div>
+
+                <!-- Boy Name Input -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label id="person1NameLabel" for="boyName" class="text-slate-200 font-semibold text-base sm:text-lg">لڑکے کا نام (اردو میں):</label>
+                        <span id="boyNameLiveSum" class="text-xs bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded-md border border-slate-700">اعداد: 0</span>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="boyName" 
+                            onfocus="setActiveInput('boyName')" 
+                            oninput="handleLiveInput('boyName', 'boyNameLiveSum')"
+                            placeholder="مثلاً: محمد علی" 
+                            class="w-full bg-slate-900/90 text-white text-xl px-4 py-3 rounded-xl border border-slate-600 focus:outline-none transition">
+                        <button onclick="clearField('boyName', 'boyNameLiveSum')" title="صاف کریں" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-rose-400 p-1">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Boy Mother Name Input -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="boyMother" class="text-slate-200 font-semibold text-base sm:text-lg">والدہ کا نام (اردو میں):</label>
+                        <span id="boyMotherLiveSum" class="text-xs bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded-md border border-slate-700">اعداد: 0</span>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="boyMother" 
+                            onfocus="setActiveInput('boyMother')" 
+                            oninput="handleLiveInput('boyMother', 'boyMotherLiveSum')"
+                            placeholder="مثلاً: کلثوم" 
+                            class="w-full bg-slate-900/90 text-white text-xl px-4 py-3 rounded-xl border border-slate-600 focus:outline-none transition">
+                        <button onclick="clearField('boyMother', 'boyMotherLiveSum')" title="صاف کریں" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-rose-400 p-1">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Girl / Second Person Card -->
+            <div id="girlCard" class="glass-card rounded-2xl p-5 sm:p-6 border-t-4 border-pink-400 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                    <h2 class="text-xl sm:text-2xl font-bold text-pink-300 flex items-center gap-2">
+                        <i class="fa-solid fa-user-check"></i>
+                        <span>لڑکی کی تفصیلات</span>
+                    </h2>
+                    <span class="text-xs bg-pink-500/20 text-pink-300 px-2.5 py-1 rounded-full border border-pink-500/30">موازنے کے لیے</span>
+                </div>
+
+                <!-- Girl Name Input -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="girlName" class="text-slate-200 font-semibold text-base sm:text-lg">لڑکی کا نام (اردو میں):</label>
+                        <span id="girlNameLiveSum" class="text-xs bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded-md border border-slate-700">اعداد: 0</span>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="girlName" 
+                            onfocus="setActiveInput('girlName')" 
+                            oninput="handleLiveInput('girlName', 'girlNameLiveSum')"
+                            placeholder="مثلاً: فاطمہ" 
+                            class="w-full bg-slate-900/90 text-white text-xl px-4 py-3 rounded-xl border border-slate-600 focus:outline-none transition">
+                        <button onclick="clearField('girlName', 'girlNameLiveSum')" title="صاف کریں" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-rose-400 p-1">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Girl Mother Name Input -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label for="girlMother" class="text-slate-200 font-semibold text-base sm:text-lg">لڑکی کی والدہ کا نام (اردو میں):</label>
+                        <span id="girlMotherLiveSum" class="text-xs bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded-md border border-slate-700">اعداد: 0</span>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="girlMother" 
+                            onfocus="setActiveInput('girlMother')" 
+                            oninput="handleLiveInput('girlMother', 'girlMotherLiveSum')"
+                            placeholder="مثلاً: خدیجہ" 
+                            class="w-full bg-slate-900/90 text-white text-xl px-4 py-3 rounded-xl border border-slate-600 focus:outline-none transition">
+                        <button onclick="clearField('girlMother', 'girlMotherLiveSum')" title="صاف کریں" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-rose-400 p-1">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Built-in Urdu Virtual Keyboard & Quick Names Helper -->
+        <div class="glass-card rounded-2xl p-4 sm:p-5 mb-6 border border-slate-700/80">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-keyboard text-amber-400 text-lg"></i>
+                    <span class="font-bold text-slate-200 text-base sm:text-lg">آن اسکرین اردو کی بورڈ</span>
+                    <span id="activeFieldBadge" class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-400/30">
+                        منتخب خانہ: لڑکے کا نام
+                    </span>
+                </div>
+                <button onclick="toggleKeyboard()" id="kbToggleBtn" class="text-xs sm:text-sm text-slate-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-600">
+                    کی بورڈ چھپائیں / دکھائیں
+                </button>
+            </div>
+
+            <div id="virtualKeyboardArea">
+                <!-- Quick Common Names Chips -->
+                <div class="mb-3 pb-3 border-b border-slate-700/70">
+                    <div class="text-xs text-slate-400 mb-2">مشہور نام (ایک کلک سے درج کریں):</div>
+                    <div class="flex flex-wrap gap-1.5" id="quickNamesContainer"></div>
+                </div>
+
+                <!-- Urdu Letters Grid with Abjad Values -->
+                <div class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-14 gap-1.5" id="urduKeysGrid"></div>
+
+                <!-- Space and Backspace controls -->
+                <div class="flex gap-2 mt-2.5">
+                    <button onclick="insertChar(' ')" class="key-btn flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold text-sm flex items-center justify-center gap-2">
+                        <span>فاصلہ (Space)</span>
+                    </button>
+                    <button onclick="backspaceChar()" class="key-btn px-5 py-2 rounded-xl bg-rose-900/50 hover:bg-rose-800/70 border border-rose-600/40 text-rose-200 font-bold text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-delete-left"></i>
+                        <span>مٹائیں</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Calculate & Reset Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-8">
+            <button onclick="calculateSitara()" class="flex-1 py-4 px-6 rounded-2xl gold-gradient text-slate-950 font-extrabold text-xl sm:text-2xl shadow-xl hover:brightness-110 active:scale-[0.99] transition flex items-center justify-center gap-3">
+                <i class="fa-solid fa-calculator"></i>
+                <span>حساب لگائیں اور مکمل نتیجہ دیکھیں</span>
+            </button>
+            <button onclick="resetAll()" class="py-4 px-6 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-lg border border-slate-600 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>نیا حساب</span>
+            </button>
+        </div>
+
+        <!-- Inline Notification Box (Replaces alert) -->
+        <div id="messageBox" class="hidden mb-6 p-4 rounded-xl bg-rose-950/90 border border-rose-500 text-rose-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-circle-exclamation text-rose-400 text-xl"></i>
+                <span id="messageText" class="text-base sm:text-lg"></span>
+            </div>
+            <button onclick="hideMessage()" class="text-rose-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsSection" class="hidden space-y-6 mb-12">
+            <!-- Compatibility Banner (Shown when both Boy & Girl are calculated) -->
+            <div id="compatibilityBanner"></div>
+
+            <!-- Individual Detailed Breakdown Cards -->
+            <div id="personCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+
+    </div>
+
+    <!-- MODAL 1: Original Reference Tables (Jadwal Adad-e-Qamari & Burj Chart) -->
+    <div id="tablesModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="glass-card max-w-4xl w-full max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-7 border border-amber-400/40 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-5 sticky top-0 bg-slate-900/95 z-10 px-2 py-2 rounded-xl">
+                <h3 class="text-2xl font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-scroll"></i>
+                    <span>جدول اعداد قمری، بروج اور ستاروں کا چارٹ</span>
+                </h3>
+                <button onclick="toggleModal('tablesModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Section 1: Abjad Table -->
+            <h4 class="text-lg font-bold text-sky-300 mb-3">1. جدول اعداد قمری (ابجد کے اعداد):</h4>
+            <div class="grid grid-cols-4 sm:grid-cols-7 gap-2 text-center mb-6" id="referenceAbjadGrid"></div>
+
+            <!-- Section 2: 1 to 12 Remainder Table -->
+            <h4 class="text-lg font-bold text-emerald-300 mb-3">2. باقی بچنے والے نمبر (1 تا 12) سے برج اور ستارہ:</h4>
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-right border-collapse border border-slate-700 text-sm sm:text-base">
+                    <thead>
+                        <tr class="bg-slate-800 text-amber-300">
+                            <th class="p-2.5 border border-slate-700">باقی نمبر</th>
+                            <th class="p-2.5 border border-slate-700">برج کا نام</th>
+                            <th class="p-2.5 border border-slate-700">ستارہ (اردو/عربی)</th>
+                            <th class="p-2.5 border border-slate-700">ہندی / معروف نام</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referenceBurjTableBody" class="divide-y divide-slate-700"></tbody>
+                </table>
+            </div>
+
+            <!-- Section 3: Planet Friendship / Enmity Table -->
+            <h4 class="text-lg font-bold text-pink-300 mb-3">3. ستاروں کی آپس میں دوستی اور دشمنی کا جدول:</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse border border-slate-700 text-sm sm:text-base">
+                    <thead>
+                        <tr class="bg-slate-800 text-amber-300">
+                            <th class="p-2.5 border border-slate-700">ستارے کا نام</th>
+                            <th class="p-2.5 border border-slate-700">کس گھر (برج) کا مالک ہے</th>
+                            <th class="p-2.5 border border-slate-700 text-emerald-300">دوست ستارے</th>
+                            <th class="p-2.5 border border-slate-700 text-rose-300">دشمن ستارے</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referencePlanetTableBody" class="divide-y divide-slate-700"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: How to Put Online / Share Link Guide -->
+    <div id="onlineGuideModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-7 border border-amber-400/40 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-5">
+                <h3 class="text-xl sm:text-2xl font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>اس سافٹ ویئر کو آن لائن کرنے کا آسان طریقہ</span>
+                </h3>
+                <button onclick="toggleModal('onlineGuideModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-slate-200 leading-relaxed text-base sm:text-lg">
+                <div class="p-4 rounded-xl bg-emerald-950/60 border border-emerald-500/40">
+                    <div class="font-bold text-emerald-300 mb-1">1. ابھی اسی وقت آن لائن چلائیں (Preview):</div>
+                    <p class="text-sm sm:text-base text-slate-300">
+                        آپ اس وقت جس اسکرین پر ہیں، یہاں اوپر <strong>Preview</strong> کے بٹن پر کلک کریں تو یہ سافٹ ویئر فوراً آن لائن چلنا شروع ہو جائے گا۔ آپ یہیں نام لکھ کر نتیجہ نکال سکتے ہیں۔
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-sky-950/60 border border-sky-500/40">
+                    <div class="font-bold text-sky-300 mb-1">2. مفت میں اپنی مستقل ویب سائٹ کا لنک بنائیں (Tiiny.host یا Netlify):</div>
+                    <ol class="list-decimal list-inside space-y-2 text-sm sm:text-base text-slate-300 mt-2">
+                        <li>سب سے پہلے اس کوڈ کو <strong>index.html</strong> کے نام سے اپنے موبائل یا کمپیوٹر میں محفوظ (Save) کر لیں۔</li>
+                        <li>اپنے براؤزر میں <strong>app.netlify.com/drop</strong> یا <strong>tiiny.host</strong> کھولیں۔</li>
+                        <li>وہاں اپنی <strong>index.html</strong> فائل اپلوڈ (Drag & Drop) کریں۔</li>
+                        <li>صرف 5 سیکنڈ میں آپ کو ایک <strong>مستقل آن لائن ویب سائٹ کا لنک (URL)</strong> مل جائے گا جسے آپ واٹس ایپ پر کسی کے ساتھ بھی شیئر کر سکتے ہیں!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. ABJAD-E-QAMARI DATA & ASTROLOGY TABLES
+        // ==========================================
+        const abjadMap = {
+            'ا': 1, 'آ': 1, 'أ': 1, 'إ': 1, 'ء': 1, 'ٱ': 1,
+            'ب': 2, 'پ': 2,
+            'ج': 3, 'چ': 3,
+            'د': 4, 'ڈ': 4,
+            'ہ': 5, 'ه': 5, 'ة': 5, 'ۃ': 5, 'ھ': 5,
+            'و': 6, 'ؤ': 6,
+            'ز': 7, 'ژ': 7,
+            'ح': 8,
+            'ط': 9,
+            'ی': 10, 'ے': 10, 'ي': 10, 'ئ': 10, 'ى': 10,
+            'ک': 20, 'ك': 20, 'گ': 20,
+            'ل': 30,
+            'م': 40,
+            'ن': 50, 'ں': 50,
+            'س': 60,
+            'ع': 70,
+            'ف': 80,
+            'ص': 90,
+            'ق': 100,
+            'ر': 200, 'ڑ': 200,
+            'ش': 300,
+            'ت': 400, 'ٹ': 400,
+            'ث': 500,
+            'خ': 600,
+            'ذ': 700,
+            'ض': 800,
+            'ظ': 900,
+            'غ': 1000
+        };
+
+        // Ordered array for Virtual Keyboard & Reference Table
+        const keyboardLetters = [
+            { char: 'ا', val: 1 }, { char: 'آ', val: 1 }, { char: 'ب', val: 2 }, { char: 'پ', val: 2 },
+            { char: 'ت', val: 400 }, { char: 'ٹ', val: 400 }, { char: 'ث', val: 500 }, { char: 'ج', val: 3 },
+            { char: 'چ', val: 3 }, { char: 'ح', val: 8 }, { char: 'خ', val: 600 }, { char: 'د', val: 4 },
+            { char: 'ڈ', val: 4 }, { char: 'ذ', val: 700 }, { char: 'ر', val: 200 }, { char: 'ڑ', val: 200 },
+            { char: 'ز', val: 7 }, { char: 'ژ', val: 7 }, { char: 'س', val: 60 }, { char: 'ش', val: 300 },
+            { char: 'ص', val: 90 }, { char: 'ض', val: 800 }, { char: 'ط', val: 9 }, { char: 'ظ', val: 900 },
+            { char: 'ع', val: 70 }, { char: 'غ', val: 1000 }, { char: 'ف', val: 80 }, { char: 'ق', val: 100 },
+            { char: 'ک', val: 20 }, { char: 'گ', val: 20 }, { char: 'ل', val: 30 }, { char: 'م', val: 40 },
+            { char: 'ن', val: 50 }, { char: 'ں', val: 50 }, { char: 'و', val: 6 }, { char: 'ہ', val: 5 },
+            { char: 'ھ', val: 5 }, { char: 'ء', val: 1 }, { char: 'ی', val: 10 }, { char: 'ے', val: 10 }
+        ];
+
+        // Original 28 Qamari Abjad Chart Order (From Image)
+        const originalQamariChart = [
+            { letters: 'ا', val: 1 }, { letters: 'ب (پ)', val: 2 }, { letters: 'ج (چ)', val: 3 },
+            { letters: 'د (ڈ)', val: 4 }, { letters: 'ہ (ھ)', val: 5 }, { letters: 'و', val: 6 },
+            { letters: 'ز (ژ)', val: 7 }, { letters: 'ح', val: 8 }, { letters: 'ط', val: 9 },
+            { letters: 'ی (ے)', val: 10 }, { letters: 'ک (گ)', val: 20 }, { letters: 'ل', val: 30 },
+            { letters: 'م', val: 40 }, { letters: 'ن (ں)', val: 50 }, { letters: 'س', val: 60 },
+            { letters: 'ع', val: 70 }, { letters: 'ف', val: 80 }, { letters: 'ص', val: 90 },
+            { letters: 'ق', val: 100 }, { letters: 'ر (ڑ)', val: 200 }, { letters: 'ش', val: 300 },
+            { letters: 'ت (ٹ)', val: 400 }, { letters: 'ث', val: 500 }, { letters: 'خ', val: 600 },
+            { letters: 'ذ', val: 700 }, { letters: 'ض', val: 800 }, { letters: 'ظ', val: 900 },
+            { letters: 'غ', val: 1000 }
+        ];
+
+        // Quick Common Names for 1-Click Insertion
+        const quickNames = [
+            'محمد', 'علی', 'احمد', 'حسن', 'حسین', 'عمر', 'عثمان', 'بلال', 'طارق', 'کاشف',
+            'فاطمہ', 'عائشہ', 'خدیجہ', 'زینب', 'مریم', 'آمنہ', 'کلثوم', 'ثمینہ', 'سعدیہ', 'رضیہ'
+        ];
+
+        // Remainder (1 to 12) to Burj & Sitara Table
+        const burjTable = {
+            1:  { burj: "برج حمل", sitara: "مریخ", hindiName: "منگل", icon: "fa-fire" },
+            2:  { burj: "برج ثور", sitara: "زہرہ", hindiName: "شکر", icon: "fa-gem" },
+            3:  { burj: "برج جوزا", sitara: "عطارد", hindiName: "بدھ", icon: "fa-wind" },
+            4:  { burj: "برج سرطان", sitara: "قمر", hindiName: "چندرماں", icon: "fa-moon" },
+            5:  { burj: "برج اسد", sitara: "آفتاب", hindiName: "سورج (شمس)", icon: "fa-sun" },
+            6:  { burj: "برج سنبلہ", sitara: "عطارد", hindiName: "بدھ", icon: "fa-seedling" },
+            7:  { burj: "برج میزان", sitara: "زہرہ", hindiName: "شکر", icon: "fa-scale-balanced" },
+            8:  { burj: "برج عقرب", sitara: "مریخ", hindiName: "منگل", icon: "fa-droplet" },
+            9:  { burj: "برج قوس", sitara: "مشتری", hindiName: "برہسپت", icon: "fa-bow-arrow" },
+            10: { burj: "برج جدی", sitara: "زحل", hindiName: "سنیچر", icon: "fa-mountain" },
+            11: { burj: "برج دلو", sitara: "زحل", hindiName: "سنیچر", icon: "fa-water" },
+            12: { burj: "برج حوت", sitara: "مشتری", hindiName: "برہسپت", icon: "fa-fish" }
+        };
+
+        // Planet Friendship & Enmity Rules (From Image Bottom Table)
+        const planetRelations = {
+            "زحل": {
+                title: "زحل یعنی سنیچر",
+                houses: "برج جدی و دلو",
+                friends: ["زہرہ", "عطارد"],
+                enemies: ["آفتاب", "قمر", "مریخ"]
+            },
+            "مشتری": {
+                title: "مشتری یعنی برہسپت",
+                houses: "برج حوت و قوس",
+                friends: ["آفتاب", "قمر", "مریخ"],
+                enemies: ["عطارد", "زہرہ"]
+            },
+            "مریخ": {
+                title: "مریخ یعنی منگل",
+                houses: "برج حمل و عقرب",
+                friends: ["آفتاب", "قمر", "مشتری"],
+                enemies: ["عطارد"]
+            },
+            "آفتاب": {
+                title: "آفتاب یعنی سورج (شمس)",
+                houses: "برج اسد",
+                friends: ["قمر", "مریخ", "مشتری"],
+                enemies: ["زحل", "زہرہ"]
+            },
+            "زہرہ": {
+                title: "زہرہ یعنی شکر",
+                houses: "برج ثور و میزان",
+                friends: ["زحل", "عطارد"],
+                enemies: ["آفتاب", "قمر"]
+            },
+            "عطارد": {
+                title: "عطارد یعنی بدھ",
+                houses: "برج جوزا و سنبلہ",
+                friends: ["آفتاب", "زہرہ"],
+                enemies: ["قمر"]
+            },
+            "قمر": {
+                title: "قمر یعنی چندرماں",
+                houses: "برج سرطان",
+                friends: ["عطارد", "آفتاب"],
+                enemies: ["زحل", "زہرہ"]
+            }
+        };
+
+        // State Variables
+        let currentMode = 'couple'; // 'couple' or 'single'
+        let activeInputId = 'boyName';
+
+        const fieldLabels = {
+            'boyName': 'لڑکے کا نام',
+            'boyMother': 'لڑکے کی والدہ کا نام',
+            'girlName': 'لڑکی کا نام',
+            'girlMother': 'لڑکی کی والدہ کا نام'
+        };
+
+        // ==========================================
+        // 2. INITIALIZATION & UI SETUP
+        // ==========================================
+        window.onload = function() {
+            renderVirtualKeyboard();
+            renderQuickNames();
+            renderReferenceTables();
+            setActiveInput('boyName');
+        };
+
+        function renderVirtualKeyboard() {
+            const grid = document.getElementById('urduKeysGrid');
+            grid.innerHTML = keyboardLetters.map(item => `
+                <button type="button" onclick="insertChar('${item.char}')" 
+                    class="key-btn bg-slate-800/90 hover:bg-amber-500 hover:text-slate-950 border border-slate-600/80 rounded-xl py-1.5 px-1 flex flex-col items-center justify-center shadow">
+                    <span class="text-lg sm:text-xl font-bold leading-none">${item.char}</span>
+                    <span class="text-[10px] opacity-75 mt-1">${item.val}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderQuickNames() {
+            const container = document.getElementById('quickNamesContainer');
+            container.innerHTML = quickNames.map(name => `
+                <button type="button" onclick="insertQuickName('${name}')"
+                    class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white border border-slate-700 text-xs sm:text-sm transition">
+                    + ${name}
+                </button>
+            `).join('');
+        }
+
+        function renderReferenceTables() {
+            // 1. Abjad Grid
+            const abjadGrid = document.getElementById('referenceAbjadGrid');
+            abjadGrid.innerHTML = originalQamariChart.map(item => `
+                <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-2">
+                    <div class="text-xl font-bold text-amber-300">${item.letters}</div>
+                    <div class="text-sm text-slate-300 mt-0.5">${item.val}</div>
+                </div>
+            `).join('');
+
+            // 2. Burj Table
+            const burjBody = document.getElementById('referenceBurjTableBody');
+            let burjRows = '';
+            for (let i = 1; i <= 12; i++) {
+                const b = burjTable[i];
+                burjRows += `
+                    <tr class="hover:bg-slate-800/50">
+                        <td class="p-2.5 border border-slate-700 font-bold text-amber-300">${i}</td>
+                        <td class="p-2.5 border border-slate-700">${b.burj}</td>
+                        <td class="p-2.5 border border-slate-700 text-sky-300 font-bold">ستارہ ${b.sitara}</td>
+                        <td class="p-2.5 border border-slate-700 text-slate-300">${b.hindiName}</td>
+                    </tr>
+                `;
+            }
+            burjBody.innerHTML = burjRows;
+
+            // 3. Planet Relations Table
+            const planetBody = document.getElementById('referencePlanetTableBody');
+            planetBody.innerHTML = Object.values(planetRelations).map(p => `
+                <tr class="hover:bg-slate-800/50">
+                    <td class="p-2.5 border border-slate-700 font-bold text-amber-300">${p.title}</td>
+                    <td class="p-2.5 border border-slate-700">${p.houses}</td>
+                    <td class="p-2.5 border border-slate-700 text-emerald-300">${p.friends.join('، ')}</td>
+                    <td class="p-2.5 border border-slate-700 text-rose-300">${p.enemies.join('، ')}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE INPUT & KEYBOARD HANDLERS
+        // ==========================================
+        function setMode(mode) {
+            currentMode = mode;
+            const tabCouple = document.getElementById('tabCouple');
+            const tabSingle = document.getElementById('tabSingle');
+            const girlCard = document.getElementById('girlCard');
+            const inputGrid = document.getElementById('inputGrid');
+            const person1Title = document.getElementById('person1Title');
+            const person1NameLabel = document.getElementById('person1NameLabel');
+
+            if (mode === 'single') {
+                tabSingle.className = "px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 gold-gradient text-slate-950 shadow-lg";
+                tabCouple.className = "px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/60";
+                girlCard.classList.add('hidden');
+                inputGrid.classList.remove('md:grid-cols-2');
+                inputGrid.classList.add('max-w-xl', 'mx-auto');
+                person1Title.innerHTML = `<i class="fa-solid fa-user"></i><span>فرد کی تفصیلات (مرد یا عورت)</span>`;
+                person1NameLabel.textContent = "نام (اردو میں):";
+                if (activeInputId === 'girlName' || activeInputId === 'girlMother') {
+                    setActiveInput('boyName');
+                }
+            } else {
+                tabCouple.className = "px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 gold-gradient text-slate-950 shadow-lg";
+                tabSingle.className = "px-5 py-2.5 rounded-xl font-bold text-base sm:text-lg transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/60";
+                girlCard.classList.remove('hidden');
+                inputGrid.classList.add('md:grid-cols-2');
+                inputGrid.classList.remove('max-w-xl', 'mx-auto');
+                person1Title.innerHTML = `<i class="fa-solid fa-user-tie"></i><span>لڑکے کی تفصیلات</span>`;
+                person1NameLabel.textContent = "لڑکے کا نام (اردو میں):";
+            }
+        }
+
+        function setActiveInput(id) {
+            ['boyName', 'boyMother', 'girlName', 'girlMother'].forEach(fieldId => {
+                const el = document.getElementById(fieldId);
+                if (el) el.classList.remove('input-active');
+            });
+            activeInputId = id;
+            const currentEl = document.getElementById(id);
+            if (currentEl) currentEl.classList.add('input-active');
+
+            const badge = document.getElementById('activeFieldBadge');
+            if (badge) badge.textContent = `منتخب خانہ: ${fieldLabels[id]}`;
+        }
+
+        function insertChar(char) {
+            const input = document.getElementById(activeInputId);
+            if (!input) return;
+            input.value += char;
+            triggerInputUpdate(activeInputId);
+        }
+
+        function insertQuickName(name) {
+            const input = document.getElementById(activeInputId);
+            if (!input) return;
+            input.value = input.value.trim() ? (input.value.trim() + ' ' + name) : name;
+            triggerInputUpdate(activeInputId);
+        }
+
+        function backspaceChar() {
+            const input = document.getElementById(activeInputId);
+            if (!input) return;
+            input.value = input.value.slice(0, -1);
+            triggerInputUpdate(activeInputId);
+        }
+
+        function clearField(inputId, sumBadgeId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(sumBadgeId).textContent = 'اعداد: 0';
+            setActiveInput(inputId);
+        }
+
+        function triggerInputUpdate(inputId) {
+            const sumMap = {
+                'boyName': 'boyNameLiveSum',
+                'boyMother': 'boyMotherLiveSum',
+                'girlName': 'girlNameLiveSum',
+                'girlMother': 'girlMotherLiveSum'
+            };
+            handleLiveInput(inputId, sumMap[inputId]);
+        }
+
+        function handleLiveInput(inputId, badgeId) {
+            const val = document.getElementById(inputId).value;
+            const data = getAdadData(val);
+            document.getElementById(badgeId).textContent = `اعداد: ${data.sum}`;
+        }
+
+        function toggleKeyboard() {
+            const kb = document.getElementById('virtualKeyboardArea');
+            kb.classList.toggle('hidden');
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function showMessage(msg) {
+            const box = document.getElementById('messageBox');
+            const text = document.getElementById('messageText');
+            text.textContent = msg;
+            box.classList.remove('hidden');
+        }
+
+        function hideMessage() {
+            document.getElementById('messageBox').classList.add('hidden');
+        }
+
+        // ==========================================
+        // 4. CORE ABJAD & SITARA CALCULATION LOGIC
+        // ==========================================
+        function getAdadData(text) {
+            let sum = 0;
+            let breakdown = [];
+            const cleanText = text.replace(/\s+/g, '');
+
+            for (let char of cleanText) {
+                if (abjadMap[char] !== undefined) {
+                    const value = abjadMap[char];
+                    sum += value;
+                    breakdown.push({ char, value });
+                }
+            }
+            return { sum, breakdown };
+        }
+
+        function calculatePerson(name, motherName) {
+            const nameObj = getAdadData(name);
+            const motherObj = getAdadData(motherName);
+            const total = nameObj.sum + motherObj.sum;
+
+            let remainder = total % 12;
+            if (remainder === 0 && total > 0) {
+                remainder = 12;
+            }
+
+            const burjInfo = burjTable[remainder] || burjTable[12];
+            const planetInfo = planetRelations[burjInfo.sitara];
+
+            return {
+                name,
+                motherName,
+                nameSum: nameObj.sum,
+                nameBreakdown: nameObj.breakdown,
+                motherSum: motherObj.sum,
+                motherBreakdown: motherObj.breakdown,
+                total,
+                remainder,
+                burj: burjInfo.burj,
+                sitara: burjInfo.sitara,
+                hindiName: burjInfo.hindiName,
+                icon: burjInfo.icon,
+                houses: planetInfo.houses,
+                friends: planetInfo.friends,
+                enemies: planetInfo.enemies
+            };
+        }
+
+        function calculateSitara() {
+            hideMessage();
+
+            const boyName = document.getElementById('boyName').value.trim();
+            const boyMother = document.getElementById('boyMother').value.trim();
+            const girlName = document.getElementById('girlName').value.trim();
+            const girlMother = document.getElementById('girlMother').value.trim();
+
+            const hasBoy = boyName !== '' && boyMother !== '';
+            const hasGirl = currentMode === 'couple' && girlName !== '' && girlMother !== '';
+
+            if (!hasBoy && !hasGirl) {
+                showMessage('براہ کرم نام اور والدہ کا نام اردو حروف میں درج کریں۔ اگر اردو کی بورڈ نہیں ہے تو نیچے دیے گئے بٹن استعمال کریں۔');
+                return;
+            }
+
+            let boyResult = null;
+            let girlResult = null;
+
+            if (hasBoy) {
+                boyResult = calculatePerson(boyName, boyMother);
+                if (boyResult.total === 0) {
+                    showMessage('درج کیے گئے نام میں اردو کے حروف نہیں ملے۔ براہ کرم اردو رسم الخط (مثلاً محمد، فاطمہ) میں نام لکھیں۔');
+                    return;
+                }
+            }
+
+            if (hasGirl) {
+                girlResult = calculatePerson(girlName, girlMother);
+                if (girlResult.total === 0) {
+                    showMessage('لڑکی کے نام میں اردو کے حروف نہیں ملے۔ براہ کرم اردو رسم الخط میں نام لکھیں۔');
+                    return;
+                }
+            }
+
+            const resultsSection = document.getElementById('resultsSection');
+            const compatibilityBanner = document.getElementById('compatibilityBanner');
+            const cardsContainer = document.getElementById('personCardsContainer');
+
+            // Render Compatibility Banner if both exist
+            if (boyResult && girlResult) {
+                compatibilityBanner.innerHTML = renderCompatibilityHTML(boyResult, girlResult);
+                cardsContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-6";
+            } else {
+                compatibilityBanner.innerHTML = '';
+                cardsContainer.className = "max-w-2xl mx-auto";
+            }
+
+            // Render Person Cards
+            let cardsHTML = '';
+            if (boyResult) {
+                const label = currentMode === 'single' ? 'نتیجہ و زائچہ' : 'لڑکے کا زائچہ و ستارہ';
+                cardsHTML += renderPersonCardHTML(label, boyResult, 'sky');
+            }
+            if (girlResult) {
+                cardsHTML += renderPersonCardHTML('لڑکی کا زائچہ و ستارہ', girlResult, 'pink');
+            }
+
+            cardsContainer.innerHTML = cardsHTML;
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function renderPersonCardHTML(title, res, colorTheme) {
+            const borderClass = colorTheme === 'sky' ? 'border-sky-400' : 'border-pink-400';
+            const badgeBg = colorTheme === 'sky' ? 'bg-sky-500/20 text-sky-300 border-sky-500/30' : 'bg-pink-500/20 text-pink-300 border-pink-500/30';
+
+            const nameChips = res.nameBreakdown.map(b => 
+                `<span class="inline-block bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-xs text-slate-200">${b.char} = ${b.value}</span>`
+            ).join(' ');
+
+            const motherChips = res.motherBreakdown.map(b => 
+                `<span class="inline-block bg-slate-800 border border-slate-700 px-2 py-0.5 rounded text-xs text-slate-200">${b.char} = ${b.value}</span>`
+            ).join(' ');
+
+            return `
+                <div class="glass-card rounded-2xl p-5 sm:p-6 border-t-4 ${borderClass} shadow-2xl">
+                    <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                        <div>
+                            <span class="text-xs px-2.5 py-1 rounded-full border ${badgeBg}">${title}</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">${res.name} <span class="text-base font-normal text-slate-400">(والدہ: ${res.motherName})</span></h3>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 text-2xl">
+                            <i class="fa-solid ${res.icon}"></i>
+                        </div>
+                    </div>
+
+                    <!-- Step-by-Step Math Box -->
+                    <div class="space-y-3 bg-slate-900/70 p-4 rounded-xl border border-slate-800 mb-5">
+                        <div>
+                            <div class="flex justify-between text-sm sm:text-base mb-1">
+                                <span class="text-slate-300">نام کے اعداد (${res.name}):</span>
+                                <span class="font-bold text-amber-300">${res.nameSum}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1">${nameChips}</div>
+                        </div>
+
+                        <div class="border-t border-slate-800 pt-2">
+                            <div class="flex justify-between text-sm sm:text-base mb-1">
+                                <span class="text-slate-300">والدہ کے اعداد (${res.motherName}):</span>
+                                <span class="font-bold text-amber-300">${res.motherSum}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1">${motherChips}</div>
+                        </div>
+
+                        <div class="border-t border-slate-800 pt-3 flex flex-wrap items-center justify-between gap-2">
+                            <div class="text-sm sm:text-base">
+                                <span class="text-slate-400">کل میزان (جمع):</span>
+                                <span class="font-bold text-white text-lg mr-1">${res.total}</span>
+                            </div>
+                            <div class="text-sm sm:text-base bg-amber-500/20 border border-amber-400/40 px-3 py-1 rounded-lg text-amber-300">
+                                <span>12 پر تقسیم سے باقی بچا نمبر:</span>
+                                <strong class="text-xl mr-1">${res.remainder}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Highlight: Burj & Sitara -->
+                    <div class="grid grid-cols-2 gap-3 mb-5">
+                        <div class="bg-gradient-to-br from-emerald-950/80 to-slate-900 p-4 rounded-xl border border-emerald-500/40 text-center">
+                            <div class="text-xs text-emerald-300 mb-1">برج (Zodiac Sign)</div>
+                            <div class="text-xl sm:text-2xl font-bold text-white">${res.burj}</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-950/80 to-slate-900 p-4 rounded-xl border border-purple-500/40 text-center">
+                            <div class="text-xs text-purple-300 mb-1">ستارہ (Planet)</div>
+                            <div class="text-xl sm:text-2xl font-bold text-white">${res.sitara} <span class="text-sm font-normal text-purple-200">(${res.hindiName})</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Planet Details: Houses, Friends, Enemies -->
+                    <div class="space-y-2 text-sm sm:text-base bg-slate-900/50 p-3.5 rounded-xl border border-slate-800">
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-400">ملکیت (گھر):</span>
+                            <span class="text-slate-200 font-semibold">${res.houses}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-emerald-400"><i class="fa-solid fa-handshake ml-1"></i>دوست ستارے:</span>
+                            <span class="text-emerald-300 font-bold">${res.friends.join('، ')}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-rose-400"><i class="fa-solid fa-bolt ml-1"></i>دشمن ستارے:</span>
+                            <span class="text-rose-300 font-bold">${res.enemies.join('، ')}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCompatibilityHTML(boy, girl) {
+            const s1 = boy.sitara;
+            const s2 = girl.sitara;
+
+            let statusTitle = '';
+            let statusDesc = '';
+            let boxStyle = '';
+            let icon = '';
+
+            if (s1 === s2) {
+                statusTitle = `ماشاءاللہ! دونوں کا ستارہ ایک ہی ہے (${s1})`;
+                statusDesc = `لڑکے اور لڑکی دونوں کا ستارہ "${s1}" نکلا ہے۔ جدول کے اصول کے مطابق ایک ہی ستارہ ہونے کی صورت میں آپس میں گہری ذہنی ہم آہنگی، محبت اور موافقت رہتی ہے۔`;
+                boxStyle = 'bg-emerald-950/90 border-2 border-emerald-400 text-emerald-100';
+                icon = 'fa-heart-circle-check text-emerald-400';
+            } else {
+                const bFriendG = boy.friends.includes(s2);
+                const gFriendB = girl.friends.includes(s1);
+                const bEnemyG = boy.enemies.includes(s2);
+                const gEnemyB = girl.enemies.includes(s1);
+
+                if ((bFriendG && gFriendB) || (bFriendG && !gEnemyB) || (gFriendB && !bEnemyG)) {
+                    statusTitle = `نتیجہ: دونوں ستاروں میں بہترین دوستی اور موافقت ہے!`;
+                    statusDesc = `لڑکے کا ستارہ "${s1} (${boy.hindiName})" اور لڑکی کا ستارہ "${s2} (${girl.hindiName})" جدول کے مطابق آپس میں دوست ہیں۔ یہ رشتہ اور ساتھ مبارک اور موافق رہے گا۔`;
+                    boxStyle = 'bg-emerald-950/90 border-2 border-emerald-400 text-emerald-100';
+                    icon = 'fa-circle-check text-emerald-400';
+                } else if (bEnemyG && gEnemyB) {
+                    statusTitle = `نتیجہ: دونوں ستاروں میں آپس میں دشمنی (مخالفت) ہے`;
+                    statusDesc = `لڑکے کا ستارہ "${s1} (${boy.hindiName})" اور لڑکی کا ستارہ "${s2} (${girl.hindiName})" جدول میں ایک دوسرے کے مخالف (دشمن) خانے میں آتے ہیں۔`;
+                    boxStyle = 'bg-rose-950/90 border-2 border-rose-500 text-rose-100';
+                    icon = 'fa-triangle-exclamation text-rose-400';
+                } else if (bEnemyG || gEnemyB) {
+                    statusTitle = `نتیجہ: یک طرفہ مخالفت / ملا جلا اثر`;
+                    statusDesc = `لڑکے کا ستارہ "${s1}" اور لڑکی کا ستارہ "${s2}" میں سے ایک ستارہ دوسرے کو دشمن یا مخالف شمار کرتا ہے، اس لیے درمیانی درجے کی احتیاط اور درگزر کی ضرورت ہوگی۔`;
+                    boxStyle = 'bg-amber-950/90 border-2 border-amber-400 text-amber-100';
+                    icon = 'fa-scale-unbalanced text-amber-400';
+                } else {
+                    statusTitle = `نتیجہ: معتدل تعلق (نہ خاص دوستی، نہ دشمنی)`;
+                    statusDesc = `لڑکے کا ستارہ "${s1}" اور لڑکی کا ستارہ "${s2}" جدول میں ایک دوسرے کے نہ دوستوں میں شامل ہیں اور نہ دشمنوں میں۔ ان کا تعلق نارمل اور معتدل رہے گا۔`;
+                    boxStyle = 'bg-sky-950/90 border-2 border-sky-400 text-sky-100';
+                    icon = 'fa-scale-balanced text-sky-400';
+                }
+            }
+
+            return `
+                <div class="rounded-2xl p-6 shadow-2xl ${boxStyle} text-center relative overflow-hidden">
+                    <div class="text-4xl mb-3">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">${statusTitle}</h2>
+                    <p class="text-base sm:text-lg opacity-90 max-w-2xl mx-auto leading-relaxed">${statusDesc}</p>
+                </div>
+            `;
+        }
+
+        function fillSampleData() {
+            setMode('couple');
+            document.getElementById('boyName').value = 'محمد علی';
+            document.getElementById('boyMother').value = 'کلثوم';
+            document.getElementById('girlName').value = 'فاطمہ';
+            document.getElementById('girlMother').value = 'خدیجہ';
+
+            triggerInputUpdate('boyName');
+            triggerInputUpdate('boyMother');
+            triggerInputUpdate('girlName');
+            triggerInputUpdate('girlMother');
+
+            calculateSitara();
+        }
+
+        function resetAll() {
+            ['boyName', 'boyMother', 'girlName', 'girlMother'].forEach(id => {
+                document.getElementById(id).value = '';
+                triggerInputUpdate(id);
+            });
+            document.getElementById('resultsSection').classList.add('hidden');
+            hideMessage();
+            setActiveInput('boyName');
+        }
+    </script>
+</body>
+</html>
