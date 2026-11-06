@@ -20,12 +20,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Gradle
+      - name: Build APK
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Build APK
+      - name: Run Build
         run: gradle --no-daemon assembleDebug
 
       - name: Upload APK
