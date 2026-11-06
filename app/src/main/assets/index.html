@@ -61,6 +61,61 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #475569;
         }
+    
+
+        /* ===== Shadi Faal Nama: Professional mobile-first redesign ===== */
+        :root { color-scheme: light; --ink:#18352e; --muted:#66756f; --gold:#bd9450; --gold-light:#ead8ad; --paper:#fbf8f1; --line:#e8e1d3; --green:#174b3e; }
+        html { scroll-behavior:smooth; }
+        body { background:linear-gradient(180deg,#f6f1e6 0%,#fbf9f4 46%,#f1eee6 100%) !important; color:var(--ink) !important; font-family:'Amiri','Noto Nastaliq Urdu',serif !important; padding:14px !important; }
+        .max-w-5xl { max-width:980px !important; }
+        .glass-card { background:rgba(255,255,255,.96) !important; color:var(--ink) !important; border:1px solid var(--line) !important; border-radius:22px !important; box-shadow:0 12px 34px rgba(39,57,48,.08) !important; backdrop-filter:none !important; }
+        header.glass-card { background:linear-gradient(135deg,#123e34 0%,#1e5a49 58%,#2d6b57 100%) !important; color:#fff !important; border:1px solid rgba(234,216,173,.55) !important; border-top:4px solid var(--gold) !important; padding:28px 20px !important; }
+        header h1 { color:#f4dfae !important; background:none !important; -webkit-text-fill-color:#f4dfae !important; font-size:clamp(1.8rem,5vw,2.8rem) !important; line-height:1.8 !important; }
+        header p { color:#e4eee9 !important; line-height:2 !important; }
+        header .bg-amber-500\/10 { background:rgba(255,255,255,.1) !important; border-color:rgba(234,216,173,.45) !important; color:#f4dfae !important; }
+        header button { border-radius:13px !important; font-weight:700 !important; }
+        h2 { line-height:1.8 !important; }
+        .border-t-4.border-sky-400,.border-t-4.border-pink-400 { border-top:4px solid var(--gold-light) !important; }
+        .text-sky-300,.text-pink-300 { color:var(--green) !important; }
+        .text-slate-200,.text-slate-300,.text-slate-400 { color:var(--muted) !important; }
+        .border-slate-700,.border-slate-600,.border-slate-800 { border-color:var(--line) !important; }
+        .bg-slate-900\/90,.bg-slate-900\/50,.bg-slate-800,.bg-slate-800\/90,.bg-slate-800\/80 { background:#f8f6f0 !important; }
+        input[type="text"] { background:#fff !important; color:var(--ink) !important; border:1.5px solid #d9d1c2 !important; border-radius:14px !important; min-height:54px !important; font-size:1.15rem !important; padding:12px 16px !important; }
+        input[type="text"]::placeholder { color:#a3aaa4 !important; }
+        .input-active { border-color:var(--gold) !important; box-shadow:0 0 0 3px rgba(189,148,80,.16) !important; }
+        button { -webkit-tap-highlight-color:transparent; }
+        .gold-gradient { background:linear-gradient(135deg,#e6c987 0%,#bd9450 100%) !important; color:#243b32 !important; }
+        .gold-text { color:#f4dfae !important; background:none !important; -webkit-text-fill-color:#f4dfae !important; }
+        #tabCouple,#tabSingle { border-radius:14px !important; font-size:1rem !important; padding:12px 16px !important; }
+        #tabSingle { color:var(--ink) !important; }
+        #tabSingle:hover { background:#f3eee3 !important; }
+        #inputGrid { gap:16px !important; }
+        #inputGrid > div { padding:20px !important; }
+        #virtualKeyboardArea .key-btn,#urduKeysGrid button { background:#f3f0e8 !important; color:#24483d !important; border:1px solid #e2dacb !important; border-radius:10px !important; }
+        #urduKeysGrid button:hover { background:#e8ddc5 !important; }
+        #virtualKeyboardArea .bg-slate-800 { background:#f3f0e8 !important; }
+        #quickNamesContainer button { background:#edf4ef !important; color:#285545 !important; border:1px solid #d6e5da !important; }
+        #activeFieldBadge { background:#f8f0dc !important; color:#85632b !important; border-color:#ead8ad !important; }
+        #resultsSection .glass-card,#resultsSection [class*="bg-slate-900"] { background:#fff !important; color:var(--ink) !important; }
+        #resultsSection .text-white,#resultsSection .text-slate-100,#resultsSection .text-slate-200 { color:var(--ink) !important; }
+        #resultsSection .text-slate-300,#resultsSection .text-slate-400 { color:var(--muted) !important; }
+        #resultsSection [class*="border-slate"] { border-color:var(--line) !important; }
+        #resultsSection [class*="bg-emerald-950"] { background:#edf6ef !important; color:#214d3b !important; }
+        #resultsSection [class*="bg-sky-950"] { background:#eef4f6 !important; color:#294c58 !important; }
+        #resultsSection [class*="bg-rose-950"] { background:#fbefed !important; color:#713f3b !important; }
+        #resultsSection [class*="bg-purple-950"] { background:#f3eff8 !important; color:#4e3c65 !important; }
+        button:focus-visible,input:focus-visible { outline:3px solid rgba(189,148,80,.35) !important; outline-offset:2px !important; }
+        .key-btn:active { transform:scale(.96) !important; }
+        @media(max-width:640px) {
+          body { padding:10px !important; }
+          header.glass-card { padding:22px 14px !important; border-radius:18px !important; }
+          #tabCouple,#tabSingle { flex:1 1 100%; justify-content:center; }
+          .flex.justify-center.mb-6 > div { width:100%; display:flex; flex-direction:column; }
+          #inputGrid > div { padding:16px !important; }
+          #urduKeysGrid { grid-template-columns:repeat(6,minmax(0,1fr)) !important; }
+          #calculateButton { width:100%; }
+        }
+
     </style>
 </head>
 <body class="p-3 sm:p-6 md:p-8">
